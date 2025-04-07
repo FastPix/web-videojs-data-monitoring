@@ -1,0 +1,32 @@
+{
+  "name": "@fastpix/videojs-monitor",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "description": "FastPix Video Data SDK to monitor and analyze video playback metrics within Video.js",
+  "author": "FastPix, Inc",
+  "license": "MIT",
+  "files": [
+    "dist/*"
+  ],
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.js"
+  },
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build:esm": "esbuild src/index.ts --bundle --outfile=dist/index.mjs --format=esm --minify",
+    "build:cjs": "esbuild src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --minify",
+    "build:js": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --minify",
+    "build": "npm run format && npm run build:esm && npm run build:cjs && npm run build:js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "esbuild": "^0.24.2",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@fastpix/video-data-core": "^1.0.1"
+  }
+}
