@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1]
+- Bug fix to prevent calls to getPlayerState and getPlayheadTimeInMs after the player has been destroyed.
+
 ## [1.0.0]
 
 ### Added

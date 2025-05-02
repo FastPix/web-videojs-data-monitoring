@@ -1,6 +1,6 @@
 {
   "name": "@fastpix/videojs-monitor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "description": "FastPix Video Data SDK to monitor and analyze video playback metrics within Video.js",
   "author": "FastPix, Inc",

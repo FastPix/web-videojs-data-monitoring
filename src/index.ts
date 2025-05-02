@@ -15,6 +15,7 @@ interface RequestHandler {
 }
 
 interface VideoPlayer {
+  isDisposed(): boolean;
   off: any;
   addClass: any;
   ready: any;
@@ -183,6 +184,8 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
 
   // Retrieve the current playhead time in milliseconds
   function getPlayheadTimeInMs(): number {
+    if (!videoPlayer || videoPlayer?.isDisposed()) return 0;
+
     const playheadTimeInSeconds = videoPlayer.currentTime();
     return playheadTimeInSeconds ? Math.floor(playheadTimeInSeconds * 1000) : 0;
   }
@@ -192,7 +195,7 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
   };
 
   const getPlayerState = () => {
-    if (!videoPlayer) return {};
+    if (!videoPlayer || videoPlayer?.isDisposed()) return {};
     const videoPlayerEl = videoPlayer.el();
     const computedStyle = window?.getComputedStyle(videoPlayerEl);
     const duration = videoPlayer.duration();
@@ -202,8 +205,8 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
     const playerHeight = computedStyle
       ? parseInt(computedStyle.height, 10)
       : videoPlayer.height();
-    let videoHeight = videoPlayer.videoHeight();
-    let videoWidth = videoPlayer.videoWidth();
+    let videoHeight = videoPlayer?.videoHeight();
+    let videoWidth = videoPlayer?.videoWidth();
 
     if (videoHeight === undefined || videoWidth === undefined) {
       const videoElement = videoPlayer.el().firstChild;
