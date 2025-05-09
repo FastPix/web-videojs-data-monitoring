@@ -1,6 +1,6 @@
 {
   "name": "@fastpix/videojs-monitor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "description": "FastPix Video Data SDK to monitor and analyze video playback metrics within Video.js",
   "author": "FastPix, Inc",
@@ -22,11 +22,11 @@
   },
   "devDependencies": {
     "@types/node": "^22.13.1",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.4",
     "prettier": "^3.4.2",
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@fastpix/video-data-core": "^1.0.1"
+    "@fastpix/video-data-core": "^1.0.2"
   }
 }

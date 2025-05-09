@@ -243,7 +243,7 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
     player_software_name: "Video.js Player",
     player_software_version: videojsInstance.VERSION ?? "",
     player_fastpix_sdk_name: "fastpix-videojs-monitoring",
-    player_fastpix_sdk_version: "1.0.0",
+    player_fastpix_sdk_version: "1.0.2",
   };
   videoPlayer.fp = videoPlayer.fp || {};
 

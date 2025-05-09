@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2]
+- Upgraded the Video Data Core SDK to the latest version.
+- Updated readme.md with a redirection link for supported dimension parameters.
+
 ## [1.0.1]
 - Bug fix to prevent calls to getPlayerState and getPlayheadTimeInMs after the player has been destroyed.
 

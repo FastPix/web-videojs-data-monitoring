@@ -80,7 +80,7 @@ After successfully completing Step 3, you can track viewer metrics in the FastPi
 
 # Step 4: Enhance Tracking with User Passable Metadata
 
-Check out the [user-passable metadata](https://docs.fastpix.io/docs/user-passable-metadata) documentation to see the metadata supported by FastPix. You can use custom metadata fields like `custom_1` to `custom_10` for your business logic, giving you the flexibility to pass any required values. Named attributes, such as `video_title` and `video_id`, can be passed directly as they are.
+Check out the [user-passable metadata](https://docs.fastpix.io/docs/user-passable-metadata-1) documentation to see the metadata supported by FastPix. You can use custom metadata fields like `custom_1` to `custom_10` for your business logic, giving you the flexibility to pass any required values. Named attributes, such as `video_title` and `video_id`, can be passed directly as they are.
 
 ```javascript
 // Import the Video.js library for video streaming
