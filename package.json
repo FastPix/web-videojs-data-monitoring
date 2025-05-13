@@ -1,6 +1,6 @@
 {
   "name": "@fastpix/videojs-monitor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "description": "FastPix Video Data SDK to monitor and analyze video playback metrics within Video.js",
   "author": "FastPix, Inc",
@@ -13,6 +13,23 @@
     "require": "./dist/index.cjs",
     "default": "./dist/index.js"
   },
+  "keywords": [
+    "FastPix video analytics",
+    "Video.js monitoring",
+    "Video.js analytics",
+    "video playback metrics",
+    "real-time video analytics",
+    "video player telemetry",
+    "Video.js SDK",
+    "video data collection",
+    "video player performance monitoring",
+    "streaming video metrics",
+    "video quality monitoring",
+    "QoE monitoring Video.js",
+    "HTML5 video analytics",
+    "real-time streaming analytics",
+    "Video.js performance tracking"
+  ],
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "build:esm": "esbuild src/index.ts --bundle --outfile=dist/index.mjs --format=esm --minify",
@@ -27,6 +44,6 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@fastpix/video-data-core": "^1.0.2"
+    "@fastpix/video-data-core": "^1.0.3"
   }
 }
