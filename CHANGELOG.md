@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5]
+
+### Changed
+
+- Upgraded `@fastpix/video-data-core` (FastPix Data Core SDK) to the latest version.
+
 ## [1.0.4]
 ### Changed
 - Updated npm authentication from Classic token to Granular token for improved security and fine-grained permissions.
