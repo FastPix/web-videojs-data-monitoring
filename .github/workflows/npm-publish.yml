@@ -1,5 +1,5 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+# Publish @fastpix/videojs-monitor to npm when a GitHub release is created.
+# See: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 
 name: Node.js Package
 
@@ -30,4 +30,4 @@ jobs:
       - run: npm run build
       - run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_publish_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.GRANULAR_NPM_PUBLISH_TOKEN }}
