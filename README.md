@@ -27,6 +27,7 @@ To get started with the SDK, install using npm or your favourite node package ma
 npm i @fastpix/videojs-monitor
 ```
 
+
 # Step 2: Import
 
 ```javascript

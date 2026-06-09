@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6]
+
+### Changed
+
+- Applied code quality fixes for improved maintainability and reliability:
+  - Replaced `window` references with `globalThis.window` for safer global access.
+  - Used `Number.parseInt` instead of the global `parseInt`.
+  - Hoisted nested helper functions (`determinePreloadType`, `defaultOnReadyStateChange`, `dispatchRequestCompleted`, `dispatchRequestFailed`, `createCallback`, `createBeforeRequestCallback`, `handleOnRequestStateChange`) to reduce function nesting depth.
+  - Replaced `Function` type usages with explicit function signatures.
+  - Added explanatory comments to intentionally empty `catch` blocks.
+  - Simplified conditional checks using optional chaining.
+- Upgraded `@fastpix/video-data-core` (FastPix Data Core SDK) to `^1.0.8`.
+
 ## [1.0.5]
 
 ### Changed

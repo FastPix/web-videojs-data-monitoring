@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video.js + FastPix data SDK test</title>
-  <link href="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video-js.min.css" rel="stylesheet">
+  <title>Video.js + FastPix + Mux Data test</title>
+  <link href="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video-js.min.css" rel="stylesheet" crossorigin="anonymous" integrity="sha384-IRJX0MPvfVi+Wk8rva4w6cpYnIN/MkJp7XchF5Lb/OhMeQboSdfmUJxfBuZy+uH1">
   <style>
     :root {
       color-scheme: light dark;
@@ -34,12 +34,34 @@
       aspect-ratio: 16 / 9;
       background: #000;
     }
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .controls input {
+      font: inherit;
+      flex: 1 1 320px;
+      min-width: 0;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #888;
+      border-radius: 6px;
+    }
+    .controls button {
+      font: inherit;
+      padding: 0.5rem 1rem;
+      border: 1px solid #888;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="player-wrap">
-    <h1>Video.js + FastPix monitor</h1>
-    <p class="hint">Run <code>npm run build</code> so <code>../dist/index.js</code> exists. Replace <code>YOUR_WORKSPACE_KEY</code> with your workspace key from the FastPix dashboard.</p>
+    <h1>Video.js + FastPix + Mux Data monitor</h1>
+    <p class="hint">Run <code>npm run build</code> so <code>../dist/index.js</code> exists. Replace the FastPix workspace key and Mux Data <code>env_key</code> with your actual keys.</p>
     <video
       id="video-player"
       class="video-js vjs-big-play-centered"
@@ -47,20 +69,35 @@
       playsinline
       preload="auto"
       poster="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg">
-      <source src="https://stream.fastpix.io/2125094c-db43-4748-90e1-18539f2ccf98.m3u8" type="application/x-mpegURL">
+      <source src="https://stream.fastpix.io/04ff6653-5a54-4bc1-b822-5bd491821d66.m3u8" type="application/x-mpegURL">
+      <track kind="captions" src="" srclang="en" label="English">
       <p class="vjs-no-js">
         To view this video please enable JavaScript, and consider upgrading to a web browser that
         <a href="https://videojs.com/html5-video-support/" target="_blank" rel="noreferrer">supports HTML5 video</a>.
       </p>
     </video>
+    <div class="controls">
+      <input
+        id="source-url"
+        type="text"
+        placeholder="Enter source URL (.m3u8)"
+        value="https://stream.fastpix.com/82af62f9-64e8-4fe6-b72b-1ccc42d9874e.m3u8">
+      <button id="load-source" type="button">Load source</button>
+      <button id="destroy-player" type="button">Destroy player</button>
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js" crossorigin="anonymous" integrity="sha384-KKCORmmArVuVN9CCRA4pm6NxKCuYh1ktQPPHlaOWJ6/tfAGEDWKWnsdMGRu7Xu5a"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mux-embed/dist/mux.js" crossorigin="anonymous" integrity="sha384-Qsf8IHL4E2JxFsaEqaFkkLKzNtEvoXqU9Q4PMVCbxZ6ADdR+l6rZDrtCN+zS3q4a"></script>
   <script src="../dist/index.js"></script>
   <script>
     (function () {
+      var MUX_ENV_KEY = '1166872370826313731';
+      var SOURCE_URL = 'https://stream.fastpix.com/82af62f9-64e8-4fe6-b72b-1ccc42d9874e.m3u8';
+
       var el = document.getElementById('video-player');
-      var initVideoJsTracking = typeof window !== 'undefined' && window.initVideoJsTracking;
+      var sourceInput = document.getElementById('source-url');
+      var initVideoJsTracking = globalThis.window !== undefined && globalThis.window.initVideoJsTracking;
 
       if (!el || typeof videojs === 'undefined') return;
       if (!initVideoJsTracking) {
@@ -76,11 +113,14 @@
         responsive: true,
       });
 
+      var initialSource = (sourceInput && sourceInput.value.trim()) || SOURCE_URL;
+      videojsInstance.src({ src: initialSource, type: 'application/x-mpegURL' });
+
       var data = {
-        workspace_id: 'YOUR_WORKSPACE_KEY',
+        workspace_id: 'your-workspace-key',
         player_name: 'test-page-player',
         player_init_time: initializationTime,
-        video_title: 'FastPix sample HLS',
+        video_title: 'FastPix sample HLS VideoJS',
         video_id: 'specific-video-id',
         viewer_id: 'test-viewer',
       };
@@ -89,14 +129,68 @@
         debug: true,
         videojs: videojs,
         disableCookies: true,
-        respectDoNotTrack: true,
+        respectDoNotTrack: false,
         automaticErrorTracking: true,
         data: data,
       });
 
+      // Mux Data integration
+      if (typeof mux !== 'undefined' && MUX_ENV_KEY !== 'YOUR_MUX_DATA_ENV_KEY') {
+        videojsInstance.ready(function () {
+          var rawVideoEl = videojsInstance.el().querySelector('video');
+          if (rawVideoEl) {
+            mux.monitor(rawVideoEl, {
+              debug: true,
+              data: {
+                env_key: MUX_ENV_KEY,
+                player_name: data.player_name,
+                player_init_time: data.player_init_time,
+                player_software_name: 'Video.js Player',
+                player_software_version: videojs.VERSION,
+                video_id: data.video_id,
+                video_title: data.video_title,
+                config_domain: "anlytix.io",
+                viewer_user_id: data.viewer_id,
+              },
+            });
+
+            videojsInstance.on('dispose', function () {
+              mux.destroyMonitor(rawVideoEl);
+            });
+          }
+        });
+      }
+
       videojsInstance.ready(function () {
         console.log('Video.js ready', videojs.VERSION);
       });
+
+      var loadBtn = document.getElementById('load-source');
+      if (loadBtn && sourceInput) {
+        loadBtn.addEventListener('click', function () {
+          var url = sourceInput.value.trim();
+          if (!url) return;
+          if (videojsInstance.isDisposed()) {
+            console.warn('Player is disposed; cannot load a new source.');
+            return;
+          }
+          videojsInstance.src({ src: url, type: 'application/x-mpegURL' });
+          videojsInstance.play();
+          console.log('Loaded source', url);
+        });
+      }
+
+      var destroyBtn = document.getElementById('destroy-player');
+      if (destroyBtn) {
+        destroyBtn.addEventListener('click', function () {
+          if (!videojsInstance.isDisposed()) {
+            videojsInstance.dispose();
+            console.log('Video.js player disposed');
+          }
+          destroyBtn.disabled = true;
+          if (loadBtn) loadBtn.disabled = true;
+        });
+      }
     })();
   </script>
 </body>

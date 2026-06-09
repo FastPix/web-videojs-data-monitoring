@@ -148,8 +148,17 @@ function isVideoType(contentType: string) {
   return /^video.*/i.exec(contentType);
 }
 
+function determinePreloadType(data: string): boolean {
+  return ["auto", "metadata"].includes(data);
+}
+
+function defaultOnReadyStateChange() {
+  /* noop */
+}
+
 const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
-  const videojsInstance = config?.videojs || (window as any)?.videojs;
+  const videojsInstance =
+    config?.videojs || (globalThis.window as any)?.videojs;
   let playerToken = "";
 
   // Error tracking configuration
@@ -190,27 +199,23 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
     return playheadTimeInSeconds ? Math.floor(playheadTimeInSeconds * 1000) : 0;
   }
 
-  const determinePreloadType = function (data: string): boolean {
-    return ["auto", "metadata"].includes(data);
-  };
-
   const getPlayerState = () => {
     if (!videoPlayer || videoPlayer?.isDisposed()) return {};
     const videoPlayerEl = videoPlayer.el();
-    const computedStyle = window?.getComputedStyle(videoPlayerEl);
+    const computedStyle = globalThis.window?.getComputedStyle(videoPlayerEl);
     const duration = videoPlayer.duration();
     const playerWidth = computedStyle
-      ? parseInt(computedStyle.width, 10)
+      ? Number.parseInt(computedStyle.width, 10)
       : videoPlayer.width();
     const playerHeight = computedStyle
-      ? parseInt(computedStyle.height, 10)
+      ? Number.parseInt(computedStyle.height, 10)
       : videoPlayer.height();
     let videoHeight = videoPlayer?.videoHeight();
     let videoWidth = videoPlayer?.videoWidth();
 
     if (videoHeight === undefined || videoWidth === undefined) {
       const videoElement = videoPlayer.el().firstChild;
-      if (videoElement && videoElement.nodeName.toUpperCase() === "VIDEO") {
+      if (videoElement?.nodeName.toUpperCase() === "VIDEO") {
         videoHeight = (videoElement as HTMLVideoElement).videoHeight;
         videoWidth = (videoElement as HTMLVideoElement).videoWidth;
       }
@@ -324,31 +329,6 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
     },
     event: number,
   ) {
-    function getFilteredResponseHeaders(headers: string) {
-      return filterHeadersByAllowedList(headers);
-    }
-
-    function dispatchRequestCompleted(attributes: {
-      request_start: number;
-      request_response_start: number;
-      request_response_end: number;
-      request_bytes_loaded: number;
-      request_hostname: string;
-      request_url: string;
-      request_response_headers: Record<string, string>;
-      request_type: string;
-    }) {
-      videoPlayer.fp.dispatch("requestCompleted", attributes);
-    }
-
-    function dispatchRequestFailed(attributes: {
-      request_hostname: string;
-      request_url: string;
-      request_type: string;
-    }) {
-      videoPlayer.fp?.dispatch("requestFailed", attributes);
-    }
-
     return function () {
       const readyState = req.readyState;
 
@@ -367,7 +347,7 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
             : (req as any)?.responseText.length;
         const requestResponseEnd = fastpixMetrix.utilityMethods.now();
         const responseHeaders = req.getAllResponseHeaders();
-        const filteredHeaders = getFilteredResponseHeaders(responseHeaders);
+        const filteredHeaders = filterHeadersByAllowedList(responseHeaders);
 
         // Check for a successful response
         if (req.status >= 200 && req.status < 300) {
@@ -398,43 +378,71 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
     };
   }
 
+  function dispatchRequestCompleted(attributes: {
+    request_start: number;
+    request_response_start: number;
+    request_response_end: number;
+    request_bytes_loaded: number;
+    request_hostname: string;
+    request_url: string;
+    request_response_headers: Record<string, string>;
+    request_type: string;
+  }) {
+    videoPlayer.fp.dispatch("requestCompleted", attributes);
+  }
+
+  function dispatchRequestFailed(attributes: {
+    request_hostname: string;
+    request_url: string;
+    request_type: string;
+  }) {
+    videoPlayer.fp?.dispatch("requestFailed", attributes);
+  }
+
+  function handleOnRequestStateChange(
+    request: Request,
+    restoreScriptTime: number,
+    callbackReq: () => void,
+  ) {
+    return () => {
+      try {
+        handleChunkRequest(request, restoreScriptTime)();
+      } catch {
+        /* intentionally empty */
+      }
+
+      try {
+        callbackReq();
+      } catch {
+        /* intentionally empty */
+      }
+    };
+  }
+
+  function createCallback(success: (request: Request) => void) {
+    return (request: Request) => {
+      const restoreScriptTime = fastpixMetrix.utilityMethods.now();
+
+      try {
+        success(request);
+      } catch {
+        /* intentionally empty */
+      }
+
+      try {
+        request.onreadystatechange = handleOnRequestStateChange(
+          request,
+          restoreScriptTime,
+          (request.onreadystatechange as () => void) ||
+            defaultOnReadyStateChange,
+        );
+      } catch {
+        /* intentionally empty */
+      }
+    };
+  }
+
   function execute(_ctx: any, settings: any): void {
-    function defaultOnReadyStateChange() {}
-
-    function createCallback(success: Function) {
-      return (request: Request) => {
-        const restoreScriptTime = fastpixMetrix.utilityMethods.now();
-
-        try {
-          success(request);
-        } catch {}
-
-        try {
-          request.onreadystatechange = handleOnRequestStateChange(
-            request,
-            restoreScriptTime,
-            request.onreadystatechange || defaultOnReadyStateChange,
-          );
-        } catch {}
-      };
-    }
-
-    function handleOnRequestStateChange(
-      request: Request,
-      restoreScriptTime: number,
-      callbackReq: Function,
-    ) {
-      return () => {
-        try {
-          handleChunkRequest(request, restoreScriptTime)();
-        } catch {}
-
-        try {
-          callbackReq();
-        } catch {}
-      };
-    }
-
     function setRequestSettings() {
       if (typeof settings.onRequest === "function") {
         settings.onRequest((s: { beforeSend: (request: Request) => void }) => {
@@ -450,21 +458,23 @@ const initVideoJsTracking = (videoPlayer: VideoPlayer, config: Config) => {
       }
     }
 
-    function createBeforeRequestCallback(
-      beforeRequest: Function = (child: any) => child,
-    ) {
-      return (value: any) => {
-        const iterator = beforeRequest(value);
-        if (iterator) {
-          iterator.beforeSend = createCallback(
-            iterator.beforeSend ?? defaultOnReadyStateChange,
-          );
-        }
-        return iterator ?? value;
-      };
-    }
-
     setRequestSettings();
+  }
+
+  function createBeforeRequestCallback(
+    beforeRequest: (value: unknown) => unknown = (child: unknown) => child,
+  ) {
+    return (value: unknown) => {
+      const iterator = beforeRequest(value);
+      if (iterator) {
+        (iterator as { beforeSend?: (request: Request) => void }).beforeSend =
+          createCallback(
+            (iterator as { beforeSend?: (request: Request) => void })
+              .beforeSend ?? defaultOnReadyStateChange,
+          );
+      }
+      return iterator ?? value;
+    };
   }
 
   // Handles the variant change in the video player by tracking the current bandwidth.
@@ -555,6 +565,6 @@ initVideoJsTracking.utilityMethods = fastpixMetrix.utilityMethods;
 
 export default initVideoJsTracking;
 
-if (typeof window !== "undefined") {
-  (window as any).initVideoJsTracking = initVideoJsTracking;
+if (globalThis.window !== undefined) {
+  (globalThis.window as any).initVideoJsTracking = initVideoJsTracking;
 }
