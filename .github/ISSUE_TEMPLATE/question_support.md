@@ -133,7 +133,7 @@ Before submitting, please ensure:
 **We'll do our best to help you get unstuck! 🚀**
 
 **For urgent issues, please also consider:**
-- [FastPix Documentation - Video.js](https://docs.fastpix.io/docs/monitor-videojs)
+- [FastPix Documentation - Video.js](https://fastpix.com/docs/web-players/monitor-videojs)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/fastpix)
-- [GitHub Discussions](https://github.com/FastPix/web-videojs-data-monitoring/discussions)
+- [GitHub Discussions](https://github.com/FastPix/web-videojs-data-monitoring/issues)
 
