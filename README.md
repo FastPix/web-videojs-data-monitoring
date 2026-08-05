@@ -1,44 +1,74 @@
-# Introduction:
+# Real-time analytics for Video.js
 
-This SDK simplifies integration steps with [Video.js](https://videojs.com/), enabling the collection of player analytics. It enables automatic tracking of video performance metrics, making the data readily available on the [FastPix dashboard](https://dashboard.fastpix.com) for monitoring and analysis. While the SDK is developed in TypeScript, the published npm package currently includes only the JavaScript output. TypeScript support, including type definitions, will be released in a future version.
+[![npm version](https://img.shields.io/npm/v/@fastpix/videojs-monitor)](https://www.npmjs.com/package/@fastpix/videojs-monitor)
+[![npm downloads](https://img.shields.io/npm/dm/@fastpix/videojs-monitor)](https://www.npmjs.com/package/@fastpix/videojs-monitor)
+[![Bundle size](https://img.shields.io/bundlephobia/minzip/@fastpix/videojs-monitor)](https://bundlephobia.com/package/@fastpix/videojs-monitor)
+[![License](https://img.shields.io/github/license/FastPix/web-videojs-data-monitoring)](./LICENSE)
+[![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/)
 
-# Key Features:
+Monitor **Video.js** with real-time playback analytics. This SDK plugs FastPix into your Video.js player and automatically tracks video performance - startup time, rebuffering, bitrate changes, playback errors and viewer engagement - and streams the data to the [FastPix dashboard](https://dashboard.fastpix.com) for monitoring and analysis.
 
-- **Track Viewer Engagement:** Gain insights into how users interact with your videos.
-- **Monitor Playback Quality:** Ensure video streaming by monitoring real-time metrics, including bitrate, buffering, startup performance, render quality, and playback failure errors.
-- **Error Management:** Identify and resolve playback failures quickly with detailed error reports.
-- **Customizable Tracking:** Flexible configuration to match your specific monitoring needs.
-- **Centralized Dashboard:** Visualize and compare metrics on the [FastPix dashboard](https://dashboard.fastpix.com) to make data-driven decisions.
+The SDK is written in TypeScript; the published npm package currently ships JavaScript output, and type definitions are planned for a future release.
 
-# Prerequisites:
+**Works with:** Video.js · HLS · DASH · JavaScript (any framework)
 
-## Getting started with FastPix:
+📖 **Docs:** https://fastpix.com/docs/web-players/monitor-videojs &nbsp;·&nbsp; 🚀 **Free account:** https://dashboard.fastpix.com
 
-To track and analyze video performance, initialize the FastPix Data SDK with your Workspace key (learn more about [Workspaces here](https://fastpix.com/docs/getting-started/set-up-a-workspace)):
+<br />
 
-1. **[Access the FastPix Dashboard](https://dashboard.fastpix.com)**: Log in and navigate to the Workspaces section.
-2. **Locate Your Workspace Key**: Copy the Workspace Key for client-side monitoring.
+## Why FastPix?
 
-# Step 1: Installation and Setup:
+- **Automatic instrumentation** - one integration call, no manual event wiring.
+- **Playback quality monitoring** - real-time bitrate, buffering, startup performance, render quality and playback failures.
+- **Error management** - detailed error reports to find and fix playback failures quickly.
+- **Customizable tracking** - flexible configuration to match your monitoring needs.
+- **Centralized dashboard** - visualize and compare metrics on the FastPix dashboard to make data-driven decisions.
 
-To get started with the SDK, install using npm or your favourite node package manager 😉:
+<br />
+
+## What you can track with Video.js analytics
+
+- Viewer engagement and watch behavior
+- Startup performance and video-start time
+- Rebuffering and buffering events
+- Bitrate and adaptive-bitrate changes
+- Render quality
+- Playback failures and error codes
+- Custom metadata (`custom_1` to `custom_10`)
+- Privacy controls: cookie-free tracking and Do Not Track
+
+<br />
+
+## Before you begin
+
+To track and analyze video performance, initialize the FastPix Data SDK with your Workspace key (learn more about [Workspaces](https://fastpix.com/docs/getting-started/set-up-a-workspace)):
+
+1. [Access the FastPix Dashboard](https://dashboard.fastpix.com): log in and navigate to the Workspaces section.
+2. Locate your [Workspace](https://fastpix.com/docs/getting-started/set-up-a-workspace) Key: copy the Workspace Key for client-side monitoring.
+
+You'll also need a working [Video.js](https://videojs.com/) player bound to an HTML5 `<video>` element.
+
+<br />
+
+## Install the Video.js analytics SDK
+
+To get started with the SDK, install using npm or your favourite node package manager:
 
 ```bash
 npm i @fastpix/videojs-monitor
 ```
 
+<br />
 
-# Step 2: Import
+## How to monitor Video.js playback
+
+Import the SDK:
 
 ```javascript
 import initVideoJsTracking from "@fastpix/videojs-monitor";
 ```
 
-# Step 3: Basic Integration
-
-The `workspace_id` is a mandatory field that must be provided. Begin by installing the `video.js` package and attach it to your HTML5 video element. Pass the `videojs` function (imported from the video.js library) along with your custom metadata to the `initVideoJsTracking` function.
-
-Tracking analytics begins once the player successfully loads the URL and starts playback.
+The `workspace_id` is a mandatory field that must be provided. Install the `video.js` package and attach it to your HTML5 video element, then pass the `videojs` function (imported from the video.js library) along with your custom metadata to the `initVideoJsTracking` function. Tracking begins once the player loads the URL and starts playback.
 
 ```javascript
 // Import the Video.js library for video streaming
@@ -77,9 +107,11 @@ initVideoJsTracking(videojsInstance, {
 // videojsInstance.fp.destroy();
 ```
 
-After successfully completing Step 3, you can track viewer metrics in the FastPix dashboard once playback ends. Steps 4, 5, and 6 are optional and can be utilized as needed to enhance your integration.
+After completing the steps above, you can track viewer metrics in the FastPix dashboard once playback ends. The sections below are optional and can be used as needed to enhance your integration.
 
-# Step 4: Enhance Tracking with User Passable Metadata
+<br />
+
+## Track custom metadata and video metrics
 
 Check out the [user-passable metadata](https://fastpix.com/docs/working-with-video-data/pass-custom-metadata-to-metrics) documentation to see the metadata supported by FastPix. You can use custom metadata fields like `custom_1` to `custom_10` for your business logic, giving you the flexibility to pass any required values. Named attributes, such as `video_title` and `video_id`, can be passed directly as they are.
 
@@ -126,11 +158,11 @@ initVideoJsTracking(videojsInstance, {
 // videojsInstance.fp.destroy();
 ```
 
-### Note:
-
 Keep metadata consistent across different video loads to make comparison easier in your analytics dashboard.
 
-# Step 5: Advanced Customization with FastPix Data SDK
+<br />
+
+## Configure privacy, cookies and error tracking
 
 | Attribute                | Description                                                                                                                                                                                                                                                                                                                                                  | Type    | Example Usage                   |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------------------------------- |
@@ -167,11 +199,11 @@ const trackingData = {
 initVideoJsTracking(videojsInstance, trackingData);
 ```
 
-# Step 6: Emit Custom Events
+<br />
 
-### Advanced Error Reporting and Contextual Tracking 
+## Track errors and stream changes
 
-By default, FastPix tracks errors that occur during playback failures. However, you can also emit a custom error event for non-severe issues that arise outside of these failures, allowing you to provide additional context for tracking purposes.
+By default, FastPix tracks errors that occur during playback failures. You can also emit a custom error event for non-severe issues that arise outside of these failures, to provide additional context for tracking purposes.
 
 ```javascript
 // Import the Video.js library for video streaming
@@ -191,9 +223,7 @@ videojsInstance.fp.dispatch("error", {
 });
 ```
 
-### Changing video streams in player
-
-When your application plays multiple videos back-to-back in the same player, it’s essential to notify the FastPix SDK whenever a new video starts; possibly in scenarios like playlist content/ video series or any other video that user wants to play.
+When your application plays multiple videos back-to-back in the same player, notify the FastPix SDK whenever a new video starts - for example with playlist content, a video series, or any other video the user plays next.
 
 ```javascript
 // Import the Video.js library for video streaming
@@ -215,6 +245,85 @@ videojsInstance.fp.dispatch("videoChange", {
 });
 ```
 
-# Detailed Usage:
+<br />
 
-For more detailed steps and advanced usage, please refer to the official [FastPix Documentation](https://fastpix.com/docs/web-players/monitor-videojs).
+## Which FastPix analytics SDK for which player
+
+Using a different player? FastPix has an analytics SDK for each. (Only repositories confirmed to exist are linked here.)
+
+| Player / framework | FastPix analytics SDK |
+|---|---|
+| Video.js | **This repo** |
+| Shaka Player | [web-video-data-shakaplayer-sdk](https://github.com/FastPix/web-video-data-shakaplayer-sdk) |
+| HTML5 `<video>` (core web) | [web-video-data-core-sdk](https://github.com/FastPix/web-video-data-core-sdk) |
+| Android (ExoPlayer) | [android-data-exoplayer-sdk](https://github.com/FastPix/android-data-exoplayer-sdk) |
+| Android (Media3) | [android-data-androidXmedia3](https://github.com/FastPix/android-data-androidXmedia3) |
+| Android (core) | [android-core-data-sdk](https://github.com/FastPix/android-core-data-sdk) |
+| iOS (AVPlayer) | [iOS-data-avplayer-sdk](https://github.com/FastPix/iOS-data-avplayer-sdk) |
+| iOS (core) | [iOS-core-data-sdk](https://github.com/FastPix/iOS-core-data-sdk) |
+
+<br />
+
+## FAQ
+
+**How do I track rebuffering and QoE in Video.js?**
+
+Install `@fastpix/videojs-monitor` and pass your Video.js instance to `initVideoJsTracking` with your `workspace_id`, as shown in "How to monitor Video.js playback." Rebuffering, startup time, bitrate and other quality metrics are then collected automatically and shown on the FastPix dashboard.
+
+**How do I collect playback analytics from Video.js?**
+
+The SDK instruments the player for you. After the integration call and playback start, metrics flow to the dashboard.
+
+**Does it work with HLS and DASH?**
+
+Yes. It tracks playback regardless of the streaming format Video.js is playing.
+
+**Does it work with React, Vue or other frameworks?**
+
+Yes. It is a JavaScript SDK, so it works in any framework - initialize it where you create your Video.js instance.
+
+**Does it support TypeScript?**
+
+The SDK is written in TypeScript. The published package currently ships JavaScript output; type definitions are planned for a future release.
+
+**Can I send custom metadata?**
+
+Yes - use the named fields plus `custom_1` to `custom_10`. See "Track custom metadata and video metrics."
+
+**How do I stop tracking?**
+
+Call `videojsInstance.fp.destroy()` on the player instance.
+
+<br />
+
+## Troubleshooting Video.js analytics
+
+- **No data on the dashboard?** 
+
+  Confirm your `workspace_id` is set and correct, and that playback actually started.
+
+- **Need to debug?** 
+
+  Set `debug: true` to see SDK logs in the console.
+
+- **Metrics look merged across videos?** 
+  
+  Emit a `videoChange` event when a new video starts in the same player, as shown above.
+
+- **Want to disable automatic error tracking?** 
+
+  Set `automaticErrorTracking: false`.
+
+<br />
+
+## Documentation
+
+For more detailed steps and advanced usage, see the official [FastPix documentation](https://fastpix.com/docs/web-players/monitor-videojs).
+
+## Support
+
+Questions or issues? Open a [GitHub issue](https://github.com/FastPix/web-videojs-data-monitoring/issues) or check the [documentation](https://fastpix.com/docs/web-players/monitor-videojs).
+
+## License
+
+[MIT](https://github.com/FastPix/web-videojs-data-monitoring/blob/main/LICENSE)
