@@ -12,7 +12,7 @@ The SDK is written in TypeScript; the published npm package currently ships Java
 
 **Works with:** Video.js · HLS · DASH · JavaScript (any framework)
 
-📖 **Docs:** https://fastpix.com/docs/web-players/monitor-videojs &nbsp;·&nbsp; 🚀 **Free account:** https://dashboard.fastpix.com
+📖 **Docs:** https://fastpix.com/docs/video-data/monitors/videojs &nbsp;·&nbsp; 🚀 **Free account:** https://dashboard.fastpix.com
 
 <br />
 
@@ -44,7 +44,7 @@ The SDK is written in TypeScript; the published npm package currently ships Java
 To track and analyze video performance, initialize the FastPix Data SDK with your Workspace key (learn more about [Workspaces](https://fastpix.com/docs/getting-started/set-up-a-workspace)):
 
 1. [Access the FastPix Dashboard](https://dashboard.fastpix.com): log in and navigate to the Workspaces section.
-2. Locate your [Workspace](https://fastpix.com/docs/getting-started/set-up-a-workspace) Key: copy the Workspace Key for client-side monitoring.
+2. Locate your Workspace Key: copy the Workspace Key for client-side monitoring.
 
 You'll also need a working [Video.js](https://videojs.com/) player bound to an HTML5 `<video>` element.
 
@@ -318,11 +318,11 @@ Call `videojsInstance.fp.destroy()` on the player instance.
 
 ## Documentation
 
-For more detailed steps and advanced usage, see the official [FastPix documentation](https://fastpix.com/docs/web-players/monitor-videojs).
+For more detailed steps and advanced usage, see the official [FastPix documentation](https://fastpix.com/docs/video-data/monitors/videojs).
 
 ## Support
 
-Questions or issues? Open a [GitHub issue](https://github.com/FastPix/web-videojs-data-monitoring/issues) or check the [documentation](https://fastpix.com/docs/web-players/monitor-videojs).
+Questions or issues? Open a [GitHub issue](https://github.com/FastPix/web-videojs-data-monitoring/issues) or check the [documentation](https://fastpix.com/docs/video-data/monitors/videojs).
 
 ## License
 
