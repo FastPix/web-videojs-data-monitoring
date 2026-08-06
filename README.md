@@ -6,9 +6,9 @@
 [![License](https://img.shields.io/github/license/FastPix/web-videojs-data-monitoring)](./LICENSE)
 [![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/)
 
-Monitor **Video.js** with real-time playback analytics. This SDK plugs FastPix into your Video.js player and automatically tracks video performance - startup time, rebuffering, bitrate changes, playback errors and viewer engagement - and streams the data to the [FastPix dashboard](https://dashboard.fastpix.com) for monitoring and analysis.
+The FastPix Video.js Monitoring SDK automatically collects playback metrics such as startup time, buffering, bitrate changes, playback errors, viewer engagement, and Quality of Experience (QoE). These metrics are sent to the [FastPix dashboard](https://dashboard.fastpix.com) where you can monitor playback health and analyze viewer behavior.
 
-The SDK is written in TypeScript; the published npm package currently ships JavaScript output, and type definitions are planned for a future release.
+The SDK integrates directly with any Video.js player and requires only a few lines of code to start collecting analytics.
 
 **Works with:** Video.js · HLS · DASH · JavaScript (any framework)
 
@@ -41,26 +41,126 @@ The SDK is written in TypeScript; the published npm package currently ships Java
 
 ## Before you begin
 
-To track and analyze video performance, initialize the FastPix Data SDK with your Workspace key (learn more about [Workspaces](https://fastpix.com/docs/getting-started/set-up-a-workspace)):
+Before integrating the SDK, make sure you have:
 
-1. [Access the FastPix Dashboard](https://dashboard.fastpix.com): log in and navigate to the Workspaces section.
-2. Locate your Workspace Key: copy the Workspace Key for client-side monitoring.
+- Node.js 18 or later.
+- npm (included with Node.js).
+- A FastPix account.
+- A FastPix Workspace Key.
+- A Video.js player or a new JavaScript project.
 
-You'll also need a working [Video.js](https://videojs.com/) player bound to an HTML5 `<video>` element.
+If you already have a Video.js application, skip to **Install the SDK**.
+
+If you're creating a new project, follow the steps below.
+
+> **NOTE:** \
+> This SDK is distributed as an npm package and uses ES modules. Your application must support ES module imports. If you're creating a new project, use a JavaScript build tool or framework such as Vite, Webpack, Parcel, React, Vue, or Angular.
 
 <br />
 
-## Install the Video.js analytics SDK
+## Create a project
 
-To get started with the SDK, install using npm or your favourite node package manager:
+Create a new directory for your project and initialize a Node.js project.
 
 ```bash
-npm i @fastpix/videojs-monitor
+mkdir videojs-demo
+cd videojs-demo
+
+npm init -y
+```
+
+The `npm init -y` command creates a `package.json` file. This file stores your project's metadata, dependencies, and npm scripts.
+
+Your project should now look like this:
+
+```text
+videojs-demo/
+└── package.json
 ```
 
 <br />
 
-## How to monitor Video.js playback
+## Install the dependencies
+
+Install **Video.js** and the **FastPix Video.js Monitoring SDK.**
+
+```bash
+npm install video.js
+npm install @fastpix/videojs-monitor
+```
+
+These packages serve different purposes:
+
+- `video.js` provides the video player.
+- `@fastpix/videojs-monitor` collects playback analytics from the Video.js player and sends them to the FastPix dashboard.
+
+After the installation completes, your project should contain:
+
+```text
+videojs-demo/
+├── node_modules/
+├── package-lock.json
+└── package.json
+```
+
+<br />
+
+## Create a Video.js player
+
+Create an `index.html` file and add a Video.js player.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Video.js Demo</title>
+
+  <link
+    href="https://vjs.zencdn.net/8.23.4/video-js.css"
+    rel="stylesheet"
+  />
+</head>
+
+<body>
+
+<video
+  id="video-player"
+  class="video-js"
+  controls
+  width="800"
+  height="450"
+>
+  <source
+    src="https://vjs.zencdn.net/v/oceans.mp4"
+    type="video/mp4"
+  />
+</video>
+
+<script type="module" src="/main.js"></script>
+
+</body>
+</html>
+```
+
+The FastPix SDK monitors an existing Video.js player. It does not create or initialize the player.
+
+Create a `main.js` file in your project root. You'll initialize the Video.js player and integrate the FastPix SDK in the next section.
+
+The `main.js` file is the application's JavaScript entry point. You'll initialize the Video.js player and integrate the FastPix SDK in this file.
+
+```text
+videojs-demo/
+├── index.html
+├── main.js
+├── node_modules/
+├── package-lock.json
+└── package.json
+```
+<br />
+
+
+## Monitor Video.js playback
 
 Import the SDK:
 
@@ -108,6 +208,30 @@ initVideoJsTracking(videojsInstance, {
 ```
 
 After completing the steps above, you can track viewer metrics in the FastPix dashboard once playback ends. The sections below are optional and can be used as needed to enhance your integration.
+
+<br />
+
+## Verify the integration
+
+After completing the integration, verify that the SDK is sending analytics to FastPix.
+
+1. Start your application.
+
+2. Play a video in the Video.js player.
+
+3. Open your browser's Developer Tools.
+
+4. Open the **Network** tab and verify that analytics requests return an HTTP `200` status.
+
+5. Let the video play until playback finishes.
+
+6. Sign in to the FastPix Dashboard.
+
+7. Navigate to **Video Data** → **Views**.
+
+A new playback session should appear with metrics such as watch time, playback quality, operating system, browser, and Quality of Experience (QoE).
+
+<Image alt="FastPix Video Data dashboard showing a successful Video.js playback session" border={false} src="https://static.fastpix.com/video.js-playback-session.png" />
 
 <br />
 
