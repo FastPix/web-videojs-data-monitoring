@@ -46,7 +46,7 @@ Before integrating the SDK, make sure you have:
 - Node.js 18 or later.
 - npm (included with Node.js).
 - A FastPix account.
-- A FastPix Workspace Key.
+- A FastPix [Workspace Key](https://fastpix.com/docs/getting-started/set-up-a-workspace).
 - A Video.js player or a new JavaScript project.
 
 If you already have a Video.js application, skip to **Install the SDK**.
@@ -87,12 +87,14 @@ Install **Video.js** and the **FastPix Video.js Monitoring SDK.**
 ```bash
 npm install video.js
 npm install @fastpix/videojs-monitor
+npm install --save-dev vite
 ```
 
 These packages serve different purposes:
 
 - `video.js` provides the video player.
 - `@fastpix/videojs-monitor` collects playback analytics from the Video.js player and sends them to the FastPix dashboard.
+- `vite` provides a local development server for running the application.
 
 After the installation completes, your project should contain:
 
@@ -168,7 +170,7 @@ Import the SDK:
 import initVideoJsTracking from "@fastpix/videojs-monitor";
 ```
 
-The `workspace_id` is a mandatory field that must be provided. Install the `video.js` package and attach it to your HTML5 video element, then pass the `videojs` function (imported from the video.js library) along with your custom metadata to the `initVideoJsTracking` function. Tracking begins once the player loads the URL and starts playback.
+The [`workspace_id`](https://fastpix.com/docs/getting-started/set-up-a-workspace) is a mandatory field that must be provided. Install the `video.js` package and attach it to your HTML5 video element, then pass the `videojs` function (imported from the video.js library) along with your custom metadata to the `initVideoJsTracking` function. Tracking begins once the player loads the URL and starts playback.
 
 ```javascript
 // Import the Video.js library for video streaming
@@ -392,7 +394,7 @@ Using a different player? FastPix has an analytics SDK for each. (Only repositor
 
 **How do I track rebuffering and QoE in Video.js?**
 
-Install `@fastpix/videojs-monitor` and pass your Video.js instance to `initVideoJsTracking` with your `workspace_id`, as shown in "How to monitor Video.js playback." Rebuffering, startup time, bitrate and other quality metrics are then collected automatically and shown on the FastPix dashboard.
+Install `@fastpix/videojs-monitor` and pass your Video.js instance to `initVideoJsTracking` with your `workspace_id`, as shown in ["How to monitor Video.js playback"](#monitor-videojs-playback). Rebuffering, startup time, bitrate and other quality metrics are then collected automatically and shown on the FastPix dashboard.
 
 **How do I collect playback analytics from Video.js?**
 
@@ -412,7 +414,7 @@ The SDK is written in TypeScript. The published package currently ships JavaScri
 
 **Can I send custom metadata?**
 
-Yes - use the named fields plus `custom_1` to `custom_10`. See "Track custom metadata and video metrics."
+Yes - use the named fields plus `custom_1` to `custom_10`. See ["Track custom metadata and video metrics."](#track-custom-metadata-and-video-metrics)
 
 **How do I stop tracking?**
 
