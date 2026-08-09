@@ -58,7 +58,7 @@ If you're creating a new project, follow the steps below.
 
 <br />
 
-## Create a project
+### Create a project
 
 Create a new directory for your project and initialize a Node.js project.
 
@@ -80,7 +80,7 @@ videojs-demo/
 
 <br />
 
-## Install the dependencies
+### Install the dependencies
 
 Install **Video.js** and the **FastPix Video.js Monitoring SDK.**
 
@@ -107,7 +107,7 @@ videojs-demo/
 
 <br />
 
-## Create a Video.js player
+### Create a Video.js player
 
 Create an `index.html` file and add a Video.js player.
 
@@ -213,7 +213,7 @@ After completing the steps above, you can track viewer metrics in the FastPix da
 
 <br />
 
-## Verify the integration
+### Verify the integration
 
 After completing the integration, verify that the SDK is sending analytics to FastPix.
 
