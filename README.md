@@ -46,7 +46,7 @@ Before integrating the SDK, make sure you have:
 - Node.js 18 or later.
 - npm (included with Node.js).
 - A FastPix account.
-- A FastPix [Workspace Key](https://fastpix.com/docs/getting-started/set-up-a-workspace).
+- A FastPix [Workspace Key](https://fastpix.com/docs/getting-started/set-up-a-workspace#creating-new-workspace).
 - A Video.js player or a new JavaScript project.
 
 If you already have a Video.js application, skip to **Install the SDK**.
@@ -170,7 +170,7 @@ Import the SDK:
 import initVideoJsTracking from "@fastpix/videojs-monitor";
 ```
 
-The [`workspace_id`](https://fastpix.com/docs/getting-started/set-up-a-workspace) is a mandatory field that must be provided. Install the `video.js` package and attach it to your HTML5 video element, then pass the `videojs` function (imported from the video.js library) along with your custom metadata to the `initVideoJsTracking` function. Tracking begins once the player loads the URL and starts playback.
+The [`workspace_id`](https://fastpix.com/docs/getting-started/set-up-a-workspace#creating-new-workspace) is a mandatory field that must be provided. Install the `video.js` package and attach it to your HTML5 video element, then pass the `videojs` function (imported from the video.js library) along with your custom metadata to the `initVideoJsTracking` function. Tracking begins once the player loads the URL and starts playback.
 
 ```javascript
 // Import the Video.js library for video streaming
@@ -188,7 +188,7 @@ const videojsInstance = videojs(videoPlayerElement);
 
 // Custom metadata for tracking purposes
 const trackingData = {
-  workspace_id: 'WORKSPACE_KEY',        // Unique key to identify your workspace (replace with your actual workspace key)
+  workspace_id: 'WORKSPACE_KEY',        // Your Workspace Key (create one: https://fastpix.com/docs/getting-started/set-up-a-workspace#creating-new-workspace)
   player_name: 'PLAYER_NAME',    // A custom name or identifier for this video player instance
   player_init_time: initializationTime, // Timestamp of when the player was initialized (useful for performance tracking)
   video_title: 'VIDEO_TITLE',          // Title of the video being played for analytics
@@ -208,6 +208,8 @@ initVideoJsTracking(videojsInstance, {
 // Call this method to stop the monitoring.
 // videojsInstance.fp.destroy();
 ```
+
+**Where these values come from:** only `workspace_id` comes from FastPix - it's your [Workspace Key](https://fastpix.com/docs/getting-started/set-up-a-workspace#creating-new-workspace) from the dashboard. The other fields describe your content and viewer, so populate them from your own application: `video_title` and `video_id` from your CMS or database, `viewer_id` from your auth or session layer (use an internal ID, not personal data), and `player_name` a label you choose for this player. `player_init_time` is set automatically by `initVideoJsTracking.utilityMethods.now()` - leave it as-is. If you're just trying the SDK out, any placeholder values work; they'll simply appear as-is on the dashboard.
 
 After completing the steps above, you can track viewer metrics in the FastPix dashboard once playback ends. The sections below are optional and can be used as needed to enhance your integration.
 
@@ -257,7 +259,7 @@ const videojsInstance = videojs(videoPlayerElement);
 
 // Custom metadata for tracking
 const trackingData = {
-  workspace_id: "WORKSPACE_KEY", // Unique key to identify your workspace (replace with your actual workspace key)
+  workspace_id: "WORKSPACE_KEY", // Your Workspace Key (create one: https://fastpix.com/docs/getting-started/set-up-a-workspace#creating-new-workspace)
   player_name: "PLAYER_NAME", // A custom name or identifier for this video player instance
   player_init_time: initializationTime, // Timestamp of when the player was initialized (useful for tracking performance metrics)
   video_title: "VIDEO_TITLE", // Title of the video being played (replace with the actual title of your video)
@@ -315,7 +317,7 @@ const trackingData = {
   respectDoNotTrack: true, // Set to true to honor users' 'Do Not Track' preferences
   automaticErrorTracking: false, // Set to false to disable automatic tracking of fatal errors
   data: {
-    workspace_id: "WORKSPACE_KEY", // Replace with your actual workspace key
+    workspace_id: "WORKSPACE_KEY", // Your Workspace Key (create one: https://fastpix.com/docs/getting-started/set-up-a-workspace#creating-new-workspace)
 
     // ... add other metadata as needed
   },
