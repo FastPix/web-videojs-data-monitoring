@@ -135,7 +135,7 @@ Create an `index.html` file and add a Video.js player.
 >
   <source
     src="http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8"
-    type="video/mp4"
+    type="application/vnd.apple.mpegurl"
   />
 </video>
 
