@@ -389,7 +389,9 @@ Using a different player? FastPix has an analytics SDK for each. (Only repositor
 | Android (Media3) | [android-data-androidXmedia3](https://github.com/FastPix/android-data-androidXmedia3) |
 | iOS (AVPlayer) | [iOS-data-avplayer-sdk](https://github.com/FastPix/iOS-data-avplayer-sdk) |
 
-More SDKs are available in the [FastPix organization](https://github.com/orgs/FastPix/repositories).
+You can find more SDKs in our [documentation](https://fastpix.com/docs/video-data/overview#what-you-can-do-with-video-data).
+
+
 
 <br />
 
