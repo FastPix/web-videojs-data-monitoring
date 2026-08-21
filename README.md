@@ -10,7 +10,7 @@ The FastPix Video.js Monitoring SDK automatically collects playback metrics such
 
 The SDK integrates directly with any Video.js player and requires only a few lines of code to start collecting analytics.
 
-**Works with:** Video.js · HLS · DASH · JavaScript (any framework)
+**Works with:** Video.js · JavaScript (any framework)
 
 📖 **Docs:** https://fastpix.com/docs/video-data/monitors/videojs &nbsp;·&nbsp; 🚀 **Free account:** https://dashboard.fastpix.com
 
@@ -134,7 +134,7 @@ Create an `index.html` file and add a Video.js player.
   height="450"
 >
   <source
-    src="https://vjs.zencdn.net/v/oceans.mp4"
+    src="http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8"
     type="video/mp4"
   />
 </video>
