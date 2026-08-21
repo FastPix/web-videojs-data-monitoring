@@ -383,12 +383,13 @@ Using a different player? FastPix has an analytics SDK for each. (Only repositor
 |---|---|
 | Video.js | **This repo** |
 | Shaka Player | [web-video-data-shakaplayer-sdk](https://github.com/FastPix/web-video-data-shakaplayer-sdk) |
-| HTML5 `<video>` (core web) | [web-video-data-core-sdk](https://github.com/FastPix/web-video-data-core-sdk) |
+| dash.js | [dash.js](https://github.com/FastPix/web-video-data-core-sdk) |
+| hls.js | [hls.js](https://github.com/FastPix/web-video-data-core-sdk) |
 | Android (ExoPlayer) | [android-data-exoplayer-sdk](https://github.com/FastPix/android-data-exoplayer-sdk) |
 | Android (Media3) | [android-data-androidXmedia3](https://github.com/FastPix/android-data-androidXmedia3) |
-| Android (core) | [android-core-data-sdk](https://github.com/FastPix/android-core-data-sdk) |
 | iOS (AVPlayer) | [iOS-data-avplayer-sdk](https://github.com/FastPix/iOS-data-avplayer-sdk) |
-| iOS (core) | [iOS-core-data-sdk](https://github.com/FastPix/iOS-core-data-sdk) |
+
+More SDKs are available in the [FastPix organization](https://github.com/orgs/FastPix/repositories).
 
 <br />
 
@@ -408,7 +409,7 @@ Yes. It tracks playback regardless of the streaming format Video.js is playing.
 
 **Does it work with React, Vue or other frameworks?**
 
-Yes. It is a JavaScript SDK, so it works in any framework - initialize it where you create your Video.js instance.
+Yes. It’s a JavaScript SDK, so it works with React, Vue, and other JavaScript frameworks or libraries. You can initialize it wherever you create your Video.js instance.
 
 **Does it support TypeScript?**
 
