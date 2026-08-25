@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video.js + FastPix — HLS</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video-js.min.css"
+    rel="stylesheet" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, sans-serif; line-height: 1.5; }
+    h1 { font-size: 1.25rem; margin: 0 0 .5rem; }
+    .hint { font-size: .875rem; color: #777; margin: 0 0 1rem; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    .video-js { width: 100%; aspect-ratio: 16 / 9; background: #000; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Video.js + FastPix Data — HLS</h1>
+    <p class="hint">
+      Serve the <strong>repo root</strong> (e.g. <code>npx serve .</code>) and open
+      <code>/examples/html5-demo/hls.html</code>. The page loads the local build at
+      <code>../../dist/index.js</code> — run <code>npm run build</code> first.
+    </p>
+
+    <video
+      id="player"
+      class="video-js vjs-big-play-centered"
+      controls
+      playsinline
+      preload="auto"
+      poster="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg">
+      <source
+        src="https://stream.fastpix.com/7c8d5087-edf7-462f-a1b3-e2fbd30747fa.m3u8"
+        type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js"></script>
+  <!-- Local build. Swap for the CDN bundle of @fastpix/videojs-monitor in production. -->
+  <script src="../../dist/index.js"></script>
+  <script>
+    (function () {
+      // initVideoJsTracking is exposed on window by ../../dist/index.js
+      var initTime = initVideoJsTracking.utilityMethods.now();
+
+      var player = videojs("player", { fluid: true, responsive: true });
+
+      initVideoJsTracking(player, {
+        videojs: videojs,
+        data: {
+          // Get your key from https://dashboard.fastpix.com
+          workspace_id: "YOUR_WORKSPACE_KEY",
+          player_name: "html5-hls-demo",
+          player_init_time: initTime,
+          video_title: "FastPix sample — HLS",
+          video_id: "fastpix-sample-hls",
+        },
+      });
+
+      // The SDK auto-detaches on player.dispose(); no manual fp.destroy() needed.
+    })();
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video.js + FastPix + Mux Data test</title>
+  <title>Video.js + FastPix Data test</title>
   <link href="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video-js.min.css" rel="stylesheet" crossorigin="anonymous" integrity="sha384-IRJX0MPvfVi+Wk8rva4w6cpYnIN/MkJp7XchF5Lb/OhMeQboSdfmUJxfBuZy+uH1">
   <style>
     :root {
@@ -60,8 +60,8 @@
 </head>
 <body>
   <div class="player-wrap">
-    <h1>Video.js + FastPix + Mux Data monitor</h1>
-    <p class="hint">Run <code>npm run build</code> so <code>../dist/index.js</code> exists. Replace the FastPix workspace key and Mux Data <code>env_key</code> with your actual keys.</p>
+    <h1>Video.js + FastPix Data monitor</h1>
+    <p class="hint">Run <code>npm run build</code> so <code>../dist/index.js</code> exists. Replace the FastPix workspace key with your actual key.</p>
     <video
       id="video-player"
       class="video-js vjs-big-play-centered"
@@ -88,11 +88,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js" crossorigin="anonymous" integrity="sha384-KKCORmmArVuVN9CCRA4pm6NxKCuYh1ktQPPHlaOWJ6/tfAGEDWKWnsdMGRu7Xu5a"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mux-embed/dist/mux.js" crossorigin="anonymous" integrity="sha384-Qsf8IHL4E2JxFsaEqaFkkLKzNtEvoXqU9Q4PMVCbxZ6ADdR+l6rZDrtCN+zS3q4a"></script>
   <script src="../dist/index.js"></script>
   <script>
     (function () {
-      var MUX_ENV_KEY = '1166872370826313731';
       var SOURCE_URL = 'https://stream.fastpix.com/82af62f9-64e8-4fe6-b72b-1ccc42d9874e.m3u8';
 
       var el = document.getElementById('video-player');
@@ -117,7 +115,7 @@
       videojsInstance.src({ src: initialSource, type: 'application/x-mpegURL' });
 
       var data = {
-        workspace_id: 'your-workspace-key',
+        workspace_id: 'YOUR_WORKSPACE_KEY',
         player_name: 'test-page-player',
         player_init_time: initializationTime,
         video_title: 'FastPix sample HLS VideoJS',
@@ -133,33 +131,6 @@
         automaticErrorTracking: true,
         data: data,
       });
-
-      // Mux Data integration
-      if (typeof mux !== 'undefined' && MUX_ENV_KEY !== 'YOUR_MUX_DATA_ENV_KEY') {
-        videojsInstance.ready(function () {
-          var rawVideoEl = videojsInstance.el().querySelector('video');
-          if (rawVideoEl) {
-            mux.monitor(rawVideoEl, {
-              debug: true,
-              data: {
-                env_key: MUX_ENV_KEY,
-                player_name: data.player_name,
-                player_init_time: data.player_init_time,
-                player_software_name: 'Video.js Player',
-                player_software_version: videojs.VERSION,
-                video_id: data.video_id,
-                video_title: data.video_title,
-                config_domain: "anlytix.io",
-                viewer_user_id: data.viewer_id,
-              },
-            });
-
-            videojsInstance.on('dispose', function () {
-              mux.destroyMonitor(rawVideoEl);
-            });
-          }
-        });
-      }
 
       videojsInstance.ready(function () {
         console.log('Video.js ready', videojs.VERSION);
