@@ -9,16 +9,20 @@ type Options = {
   metadata: Record<string, unknown>;
 };
 
-// Creates a Video.js player inside a <video> ref and attaches FastPix tracking.
-// Returns a ref to place on a <video data-vjs-player> element.
+// Video.js owns/destroys its own element, so create it imperatively rather than
+// handing it a React-rendered <video> (survives StrictMode remounts).
 export function useFastpixVideojs({ source, metadata }: Options) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const player = videojs(el, {
+    const videoEl = document.createElement("video-js");
+    videoEl.classList.add("vjs-big-play-centered");
+    container.appendChild(videoEl);
+
+    const player = videojs(videoEl, {
       controls: true,
       fluid: true,
       responsive: true,
@@ -33,14 +37,12 @@ export function useFastpixVideojs({ source, metadata }: Options) {
       },
     });
 
-    // Disposing the player triggers the SDK's own fp.destroy() via its
-    // "dispose" listener — no separate teardown call is needed.
+    // dispose() also runs the SDK's fp.destroy() via its "dispose" listener.
     return () => {
       if (!player.isDisposed()) player.dispose();
     };
-    // Re-create on source change; metadata is read once at attach time.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [source.src, source.type]);
 
-  return videoRef;
+  return containerRef;
 }

@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import videojs from "video.js";
-import initVideoJsTracking from "@fastpix/videojs-monitor";
 import "video.js/dist/video-js.css";
 
 type Props = {
@@ -11,40 +9,50 @@ type Props = {
   metadata: Record<string, unknown>;
 };
 
-// Video.js is browser-only, so the player is created inside useEffect on the
-// client. The FastPix SDK import itself is SSR-safe (it only touches `window`
-// inside a guarded block), so no next/dynamic { ssr: false } workaround is needed.
+// video.js touches `window` at import, so load it (and the SDK) inside the
+// client-only effect to avoid SSR "window is not defined".
 export default function Player({ src, type, metadata }: Props) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
+    let player: any;
+    let cancelled = false;
 
-    const player = videojs(el, {
-      controls: true,
-      fluid: true,
-      responsive: true,
-      sources: [{ src, type }],
-    });
+    (async () => {
+      const videojs = (await import("video.js")).default;
+      const initVideoJsTracking = (await import("@fastpix/videojs-monitor"))
+        .default;
+      const container = containerRef.current;
+      if (cancelled || !container) return;
 
-    initVideoJsTracking(player, {
-      videojs,
-      data: {
-        player_init_time: initVideoJsTracking.utilityMethods.now(),
-        ...metadata,
-      },
-    });
+      // Create the element imperatively so video.js — not React — owns it.
+      const videoEl = document.createElement("video-js");
+      videoEl.classList.add("vjs-big-play-centered");
+      container.appendChild(videoEl);
 
-    // player.dispose() triggers the SDK's own fp.destroy() via its dispose listener.
+      player = videojs(videoEl, {
+        controls: true,
+        fluid: true,
+        responsive: true,
+        sources: [{ src, type }],
+      });
+
+      initVideoJsTracking(player, {
+        videojs,
+        data: {
+          player_init_time: initVideoJsTracking.utilityMethods.now(),
+          ...metadata,
+        },
+      });
+    })();
+
+    // dispose() also runs the SDK's fp.destroy() via its "dispose" listener.
     return () => {
-      if (!player.isDisposed()) player.dispose();
+      cancelled = true;
+      if (player && !player.isDisposed()) player.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, type]);
 
-  return (
-    <div data-vjs-player key={src}>
-      <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
-    </div>
-  );
+  return <div ref={containerRef} data-vjs-player />;
 }

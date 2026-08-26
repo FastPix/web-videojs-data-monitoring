@@ -17,9 +17,7 @@ const SOURCES = {
 export default function App() {
   const [kind, setKind] = useState<keyof typeof SOURCES>("hls");
 
-  // key={kind} in the <video> forces a full remount when switching streams,
-  // so the player is disposed and re-attached cleanly.
-  const videoRef = useFastpixVideojs({
+  const containerRef = useFastpixVideojs({
     source: SOURCES[kind],
     metadata: {
       // Get your key from https://dashboard.fastpix.com
@@ -37,9 +35,7 @@ export default function App() {
         <button onClick={() => setKind("hls")} disabled={kind === "hls"}>HLS</button>
         <button onClick={() => setKind("dash")} disabled={kind === "dash"}>DASH</button>
       </div>
-      <div data-vjs-player key={kind}>
-        <video ref={videoRef} className="video-js vjs-big-play-centered" playsInline />
-      </div>
+      <div ref={containerRef} data-vjs-player />
     </main>
   );
 }
