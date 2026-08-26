@@ -1,18 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "video.js/dist/video-js.css";
 
-type Props = {
-  src: string;
-  type: string;
-  metadata: Record<string, unknown>;
+const SOURCES = {
+  hls: {
+    src: "https://stream.fastpix.com/7c8d5087-edf7-462f-a1b3-e2fbd30747fa.m3u8",
+    type: "application/x-mpegURL",
+  },
+  dash: {
+    // FastPix sample is HLS-only; public DASH stream used as a stand-in.
+    src: "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd",
+    type: "application/dash+xml",
+  },
 };
+
+type Props = { metadata: Record<string, unknown> };
 
 // video.js touches `window` at import, so load it (and the SDK) inside the
 // client-only effect to avoid SSR "window is not defined".
-export default function Player({ src, type, metadata }: Props) {
+export default function Player({ metadata }: Props) {
+  const [kind, setKind] = useState<keyof typeof SOURCES>("hls");
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { src, type } = SOURCES[kind];
 
   useEffect(() => {
     let player: any;
@@ -41,6 +51,8 @@ export default function Player({ src, type, metadata }: Props) {
         videojs,
         data: {
           player_init_time: initVideoJsTracking.utilityMethods.now(),
+          video_title: `FastPix sample — ${kind.toUpperCase()}`,
+          video_id: `nextjs-${kind}`,
           ...metadata,
         },
       });
@@ -54,5 +66,13 @@ export default function Player({ src, type, metadata }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, type]);
 
-  return <div ref={containerRef} data-vjs-player />;
+  return (
+    <>
+      <div style={{ margin: "1rem 0", display: "flex", gap: ".5rem" }}>
+        <button onClick={() => setKind("hls")} disabled={kind === "hls"}>HLS</button>
+        <button onClick={() => setKind("dash")} disabled={kind === "dash"}>DASH</button>
+      </div>
+      <div ref={containerRef} data-vjs-player />
+    </>
+  );
 }
