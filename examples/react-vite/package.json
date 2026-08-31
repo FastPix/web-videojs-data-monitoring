@@ -1,0 +1,25 @@
+{
+  "name": "fastpix-videojs-react-vite-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fastpix/videojs-monitor": "^1.0.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "video.js": "^8.21.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/video.js": "^7.3.58",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.2"
+  }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video.js + FastPix — DASH</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video-js.min.css"
+    rel="stylesheet" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, sans-serif; line-height: 1.5; }
+    h1 { font-size: 1.25rem; margin: 0 0 .5rem; }
+    .hint { font-size: .875rem; color: #777; margin: 0 0 1rem; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    .video-js { width: 100%; aspect-ratio: 16 / 9; background: #000; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Video.js + FastPix Data — DASH</h1>
+    <p class="hint">
+      Video.js plays DASH through its built-in VHS engine — no extra library needed.
+      Serve the <strong>repo root</strong> and run <code>npm run build</code> first.
+      The FastPix sample asset is HLS-only, so this page uses a public DASH stream.
+    </p>
+
+    <video
+      id="player"
+      class="video-js vjs-big-play-centered"
+      controls
+      playsinline
+      preload="auto">
+      <source
+        src="https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
+        type="application/dash+xml" />
+    </video>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/video.js@8.21.0/dist/video.min.js"></script>
+  <script src="../../dist/index.js"></script>
+  <script>
+    (function () {
+      var initTime = initVideoJsTracking.utilityMethods.now();
+
+      var player = videojs("player", { fluid: true, responsive: true });
+
+      initVideoJsTracking(player, {
+        videojs: videojs,
+        data: {
+          workspace_id: "YOUR_WORKSPACE_KEY",
+          player_name: "html5-dash-demo",
+          player_init_time: initTime,
+          video_title: "DASH sample",
+          video_id: "dash-sample",
+        },
+      });
+    })();
+  </script>
+</body>
+</html>
