@@ -292,7 +292,7 @@ Keep metadata consistent across different video loads to make comparison easier 
 
 ## Additional metadata
 
-Alongside the named attributes above, the SDK accepts the following. All are optional and passed through exactly as given. Any you omit are simply absent from the report, which is never an error.
+The SDK also accepts the following optional attributes. It passes each attribute through unchanged. If you omit an attribute, the report excludes it without returning an error.
 
 **Your application**
 
