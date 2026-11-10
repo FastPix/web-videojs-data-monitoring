@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7]
+
+> Requires `@fastpix/video-data-core` **1.1.0 or newer**.
+
+### Added
+- **Rendition tracking** - `view_rendition_upshift_count`, `view_rendition_downshift_count`, `view_last_rendition_changed_time`,`video_source_rendition_name` and initial-bitrate capture on both HLS and DASH.
+- **Viewer environment fields** - browser viewport dimensions, cookies-enabled, and Do Not Track.
+- **Player state fields** - mute, volume, loop, playback rate, viewable percentage, and picture-in-picture usage.
+- **New pass-through metadata** - `application_name`, `application_version`, `page_type`, the three `viewer_plan*` fields, eight `video_*` title fields, DRM level, CDN edge/origin, time-shift and captions/PiP capability flags.
+
 ## [1.0.6]
 
 ### Changed

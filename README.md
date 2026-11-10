@@ -290,6 +290,55 @@ Keep metadata consistent across different video loads to make comparison easier 
 
 <br />
 
+## Additional metadata
+
+The SDK also accepts the following optional attributes. It passes each attribute through unchanged. If you omit an attribute, the report excludes it without returning an error.
+
+**Your application**
+
+```javascript
+application_name: "APPLICATION_NAME", // Which client app the view came from
+application_version: "APPLICATION_VERSION", // Its version - useful for spotting a bad release
+content_id: "CONTENT_ID", // Your own content identifier
+device_id: "DEVICE_ID", // Your own device identifier
+page_type: "PAGE_TYPE", // Where the player is embedded
+```
+
+**The viewer**
+
+```javascript
+viewer_plan: "VIEWER_PLAN", // Subscription plan
+viewer_plan_category: "VIEWER_PLAN_CATEGORY", // free, paid, trial
+viewer_plan_status: "VIEWER_PLAN_STATUS", // active, expired, cancelled
+```
+
+**The title**
+
+```javascript
+video_brand: "VIDEO_BRAND", // Brand it is published under
+video_affiliate: "VIDEO_AFFILIATE", // Distribution partner
+video_creator_id: "VIDEO_CREATOR_ID", // Uploader or studio
+video_description: "VIDEO_DESCRIPTION", // Short summary of the title
+video_media_tags: "VIDEO_MEDIA_TAGS", // Comma separated tags from your catalogue
+video_codec: "VIDEO_CODEC", // What your catalogue says the title is encoded with
+video_audio_codec: "VIDEO_AUDIO_CODEC", // The SDK separately measures what the
+video_dynamic_range_type: "VIDEO_DYNAMIC_RANGE_TYPE", // player actually received
+```
+
+**Delivery and playback capabilities**
+
+```javascript
+view_drm_level: "VIEW_DRM_LEVEL", // Widevine L1 (hardware) or L3 (software)
+view_cdn_edge_pop: "VIEW_CDN_EDGE_POP", // Edge location that served the view
+view_cdn_origin: "VIEW_CDN_ORIGIN", // Origin the CDN pulled from
+view_time_shift_enabled: true, // Live stream was paused or rewound
+player_captions_enabled: true, // Your UI offers captions
+player_pip_enabled: true, // Your UI offers picture in picture
+```
+
+<br />
+
+
 ## Configure privacy, cookies and error tracking
 
 | Attribute                | Description                                                                                                                                                                                                                                                                                                                                                  | Type    | Example Usage                   |
